@@ -1,0 +1,73 @@
+from faker import Faker
+fake = Faker()
+
+class BaseContact:
+    def __init__(self, name, surname, phone, email):
+        self.name = name
+        self.surname = surname
+        self.phone = phone
+        self.email = email
+    
+    def contact(self):
+        print(f"Wybieram numer {self.phone} i dzwonię do {self.name} {self.surname}.")
+
+    @property
+    def label_length(self):
+        print(len(self.name), len(self.surname))
+
+    def __repr__(self):
+        return f"Imię: {self.name} Nazwisko: {self.surname}, Telefon: +48 {self.phone}, email: {self.email} "
+
+class BusinessContact(BaseContact):
+    def __init__(self, job, firm, work_phone, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.job = job
+        self.firm = firm
+        self.work_phone = work_phone
+
+    def contact(self):
+        print(f"Wybieram numer {self.work_phone} i dzwonię do {self.name} {self.surname}.")
+ 
+    def __repr__(self):
+        return f"Imię: {self.name} Nazwisko: {self.surname}, Telefon służbowy: +48 {self.work_phone}, stanowisko: {self.job}, organizacja: {self.firm}"
+    
+BaseContact1 = BaseContact(name = "Leonard", surname = "Corey", phone = "407-926-2629", email = "CoreyRLeonard@rhyta.com")
+BaseContact2 = BaseContact(name = "Gilberto", surname = "Rosario", phone = "630-453-7913", email = "GilbertoHRosario@armyspy.com")
+BaseContact3 = BaseContact(name = "Terry", surname = "McDonald", phone = "713-812-9154", email = "TerryEMcDonald@teleworm.us")
+BaseContact4 = BaseContact(name = "Joseph", surname = "Grose", phone = "765-454-4080", email = "JosephRGrose@rhyta.com")
+BaseContact5 = BaseContact(name = "Brian", surname = "Chamber", phone = "304-471-6709", email = "BrianHChamber@jourrapide.com")
+
+BusinessContact1 = BusinessContact(name = "Leonard", surname = "Corey", firm = "Mansmann's Department Store", job = "Department head",phone = "407-926-2629", email = "CoreyRLeonard@rhyta.com", work_phone = "860-583-8678",)
+BusinessContact2 = BusinessContact(name = "Gilberto", surname = "Rosario", firm = "Gas Legion", job = "Job placement officer", phone = "630-453-7913", email = "GilbertoHRosario@armyspy.com",  work_phone = "904-647-8506",)
+BusinessContact3 = BusinessContact(name = "Terry", surname = "McDonald", firm = "Mostow Co.", job = "Teacher assistant", phone = "713-812-9154", email = "TerryEMcDonald@teleworm.us", work_phone = "914-232-1325",)
+BusinessContact4 = BusinessContact(name = "Joseph", surname = "Grose", firm = "Sportmart", job = "Field technician", phone = "765-454-4080", email = "JosephRGrose@rhyta.com", work_phone = "214-251-4022",)
+BusinessContact5 = BusinessContact(name = "Brian", surname = "Chamber", firm = "Piece Goods Fabric", job = "Nuclear technician", phone = "304-471-6709", email = "BrianHChamber@jourrapide.com",  work_phone = "419-652-7422",)
+
+BaseContact_list = [BaseContact1, BaseContact2, BaseContact3, BaseContact4, BaseContact5]
+BusinessContact_list = [BusinessContact1, BusinessContact2, BusinessContact3, BusinessContact4, BusinessContact5,]
+
+for i in BaseContact_list:
+    i.contact()
+    i.label_length
+for i in BusinessContact_list:
+    i.contact()
+    i.label_length
+
+def create_contact(type, amount):
+    contact_list = []
+    for i in range(0,amount):
+        if type == "BaseContact":
+            contact = BaseContact(name = fake.first_name(), surname = fake.last_name(), phone = fake.random_int(111111111,999999999), email = fake.email())
+            contact_list.append(contact)      
+        elif type == "BusinessContact":
+            contact = BusinessContact(name = fake.first_name(), surname = fake.last_name(), phone = fake.random_int(111111111,999999999), email = fake.email(), firm = fake.company(), job = fake.job(), work_phone =fake.random_int(111111111,999999999),)
+            contact_list.append(contact)
+        else:
+            print("To nie jest rodzaj wizytówki!")
+            break
+    print(contact_list)
+    
+
+create_contact("BusinessContact", 5)
+
+#faker generowal bardzo dziwne numery telefonów, więc wygenerowalem je jako losowe ciągi 9 cyfr"
